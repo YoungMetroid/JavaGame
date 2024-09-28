@@ -4,8 +4,6 @@ import Levels.LevelLoader;
 import Levels.TestVillage;
 import Tiles.Tree;
 import inputs.KeyboardInputs;
-
-import javax.swing.text.html.Option;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,6 +15,7 @@ public class GameState {
     //int semafore = 0;
     public GameState(){
     }
+
     public void renderLevel(){
         currentLevel.render();
         player.render();
@@ -24,8 +23,6 @@ public class GameState {
     public void update(){
         //All player, movement, and enemies interactions
         //As well as camara movement calculation should be done here.
-
-
             if(!Renderer.loading && !Renderer.unFading) {
                 int x = player.getXLocation();
                 int y = player.getYLocation();
@@ -39,15 +36,14 @@ public class GameState {
                     player.xLocation = x;
                     player.yLocation = y;
                 }
-                //loadNextLevel();
                 areThereNextLevel();
                 Camara.update(player, currentLevel);
             }
             else if(Renderer.loading && Renderer.unFading){
               loadNextLevel();
             }
-
     }
+
     public void areThereNextLevel(){
         Optional<int[]> exits = currentLevel.isPlayerAtExit(player);
         if(exits.isPresent() ){
@@ -57,26 +53,16 @@ public class GameState {
     public void loadNextLevel(){
         Optional<int[]> exits = currentLevel.isPlayerAtExit(player);
         if(exits.isPresent() ){
-            //&& semafore == 0
-           // semafore = 1;
             int[] exit = exits.get();
-            player.xLocation = exit[5];
-            player.yLocation = exit[6];
-            currentLevel.setLevel(levelList.get(exit[0]));
-            currentLevel.setExits(exitsList.get(exit[0]));
+            player.xLocation = exit[ExitsDef.PLAYER_X.getValue()];
+            player.yLocation = exit[ExitsDef.PLAYER_Y.getValue()];
+            currentLevel.setLevel(levelList.get(exit[ExitsDef.LEVEL.getValue()]));
+            currentLevel.setExits(exitsList.get(exit[ExitsDef.LEVEL.getValue()]));
             currentLevel.clearLevel();
             currentLevel.generateLevel();
             Camara.camaraCalculation(player.xLocation,player.yLocation,
                                     currentLevel.levelWidth,currentLevel.levelHeight);
         }
-  /*      else if(exits.isPresent() && semafore == 1){
-            System.out.println("Already loaded level no need to load");
-        }
-        else if(!exits.isPresent() && semafore == 1){
-            semafore = 0;
-        }
-
-   */
     }
     public void loadLevel(){
         LevelLoader levelLoader = new LevelLoader();
@@ -89,17 +75,9 @@ public class GameState {
         currentLevel = new TestVillage(levelList.get(3));
         currentLevel.generateLevel();
         currentLevel.setExits(exits);
-        player = new Tree(128,460);
+        player = new Tree(128,200);
         Camara.camaraCalculation(player.xLocation, player.yLocation,
                                 currentLevel.levelWidth, currentLevel.levelHeight);
         Camara.print(player.xLocation,player.yLocation);
-        /*
-        Camara.x =-160;
-        Camara.y =-64;
-        Camara.leftScroll += 160;
-        Camara.rightScroll += 160;
-        Camara.upScroll += 64;
-        Camara.downScroll += 64;
-         */
     }
 }

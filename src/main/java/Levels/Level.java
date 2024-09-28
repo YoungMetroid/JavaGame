@@ -1,6 +1,7 @@
 package Levels;
 
 import Tiles.*;
+import org.tutorial.ExitsDef;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,18 +46,18 @@ public abstract class Level {
         Optional<int[]> exit = exits.stream().filter(
                 allExits-> (
                         //LeftSide Player collision with rightSide Exit
-                        ((tile.xLocation >= allExits[1]  &&
-                            tile.xLocation <= allExits[2] - exitOffSet) ||
+                        ((tile.xLocation >= allExits[ExitsDef.LEFT_X.getValue()]  &&
+                            tile.xLocation <= allExits[ExitsDef.RIGHT_X.getValue()] - exitOffSet) ||
                         //RightSide Player collision with leftSide Exit
-                        (tile.xLocation + tile.getTileSize() >= allExits[1] + exitOffSet &&
-                                tile.xLocation + tile.getTileSize()  <= allExits[2]))
+                        (tile.xLocation + tile.getTileSize() >= allExits[ExitsDef.LEFT_X.getValue()] + exitOffSet &&
+                                tile.xLocation + tile.getTileSize()  <= allExits[ExitsDef.RIGHT_X.getValue()]))
                         &&
                         //TopSide Player collision with BottomSide Exit
-                        ((tile.yLocation >= allExits[3] &&
-                                tile.yLocation <= allExits[4] - exitOffSet) ||
+                        ((tile.yLocation >= allExits[ExitsDef.TOP_Y.getValue()] &&
+                                tile.yLocation <= allExits[ExitsDef.BOTTOM_Y.getValue()] - exitOffSet) ||
                         //BottomSide Player collision with TopSide Exit
-                        (tile.yLocation + tile.getTileSize()-1 >= allExits[3] + exitOffSet &&
-                                tile.yLocation + tile.getTileSize()-1  <= allExits[4]))
+                        (tile.yLocation + tile.getTileSize()-1 >= allExits[ExitsDef.TOP_Y.getValue()] + exitOffSet &&
+                                tile.yLocation + tile.getTileSize()-1  <= allExits[ExitsDef.BOTTOM_Y.getValue()]))
                 )
         ).findFirst();
        return exit;
