@@ -2,6 +2,7 @@ package org.tutorial;
 import Levels.Level;
 import Levels.LevelLoader;
 import Levels.TestVillage;
+import Tiles.Medic;
 import Tiles.Tree;
 import inputs.KeyboardInputs;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public class GameState {
     Map<Integer,String[][]> levelList;
     Map<Integer,int[][]> exitsList;
-    Tree player;
+    Medic player;
     Level currentLevel;
     //int semafore = 0;
     public GameState(){
@@ -75,7 +76,7 @@ public class GameState {
         currentLevel = new TestVillage(levelList.get(3));
         currentLevel.generateLevel();
         currentLevel.setExits(exits);
-        player = new Tree(128,200);
+        player = new Medic(128,200);
         Camara.camaraCalculation(player.xLocation, player.yLocation,
                                 currentLevel.levelWidth, currentLevel.levelHeight);
         Camara.print(player.xLocation,player.yLocation);
