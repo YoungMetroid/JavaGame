@@ -3,7 +3,6 @@ import Levels.Level;
 import Levels.LevelLoader;
 import Levels.TestVillage;
 import Tiles.Medic;
-import Tiles.Tree;
 import inputs.KeyboardInputs;
 import java.util.Map;
 import java.util.Optional;

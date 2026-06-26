@@ -24,6 +24,22 @@ public abstract class Level {
     public abstract void clearLevel();
     public abstract void setLevel(String[][] level);
     public boolean isThereACollision(Tile tile){
+
+
+        for(int i=0; i < collidableObjects.size(); i++){
+
+            int collidableObjTileSize = collidableObjects.get(i).getTileSize();
+            int collidableObjxLocation = collidableObjects.get(i).xLocation;
+            int collidableObjyLocation = collidableObjects.get(i).yLocation;
+            if(tile.xLocation+collisionOffSet >= collidableObjxLocation &&
+            tile.xLocation+collisionOffSet < collidableObjxLocation + collidableObjects.get(i).getTileSize()
+            ) return true;
+
+            if(tile.xLocation+tile.getTileSize()-collisionOffSet > collidableObjxLocation
+              && tile.xLocation+tile.getTileSize()-collisionOffSet <= collidableObjyLocation + collidableObjTileSize
+            )
+                return true;
+        }
         List<Tile>collision = collidableObjects.stream().filter(
                 //Right Side compare to Left Player
                 walls-> (   ((tile.xLocation+collisionOffSet >= walls.xLocation  &&
