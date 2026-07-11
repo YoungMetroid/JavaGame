@@ -4,9 +4,9 @@ import Entities.Entity;
 import inputs.KeyboardInputs;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class Game implements Runnable{
-
     private Thread gameThread;
     private final int FPS_SET = 60;
     private final int ONE_NANO_SECOND = 1_000_000_000;
@@ -20,6 +20,7 @@ public class Game implements Runnable{
         gamePanel.requestFocus();
         starGameLoop();
     }
+
     private void starGameLoop(){
         gameState.loadLevel();
         gameThread = new Thread(this);
@@ -35,6 +36,7 @@ public class Game implements Runnable{
         int frames = 0;
         long lastCheck = System.currentTimeMillis();
 
+
         while(true){
             now = System.nanoTime();
             if(now-lastFrame >= timePerFrame){
@@ -42,7 +44,14 @@ public class Game implements Runnable{
                 if(Camara.tick == 60){
                     Camara.tick = 0;
                 }
-                Arrays.fill(Renderer.pixeles,0);
+                for(Map.Entry<Integer, Boolean> entry:KeyboardInputs.keysPressed.entrySet()){
+                    if(entry.getValue()){
+                        Integer tick = KeyboardInputs.continuedKeyPress.getOrDefault(entry.getKey(),0);
+                        tick++;
+                        KeyboardInputs.continuedKeyPress.put(entry.getKey(),tick);
+                    }
+                }
+                gameState.blackFill();
                 gameState.update();
                 gameState.renderLevel();
                 gamePanel.repaint();

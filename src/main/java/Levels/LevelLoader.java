@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LevelLoader {
-
     Map<Integer, String[][]> levelList = new HashMap<>();
     Map<Integer,int[][]> exitsList = new HashMap<>();
     public LevelLoader(){
@@ -21,7 +20,6 @@ public class LevelLoader {
     public void loadLevels(){
         String csvFilePath = "Levels.csv";
         URL urlPath = getClass().getClassLoader().getResource(csvFilePath);
-
         try{
             Reader reader = Files.newBufferedReader(Paths.get(urlPath.toURI()));
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
@@ -65,7 +63,7 @@ public class LevelLoader {
                     .build();
             Iterable<CSVRecord> records = csvFormat.parse(reader);
             int[][] exits = new int[0][0];
-            final int columnSize = 7;
+            final int columnSize = 8;
             int currentRow = 0;
             int levelId = 0;
             for(CSVRecord record : records){
@@ -79,9 +77,10 @@ public class LevelLoader {
                     exitsList.put(levelId,exits);
                 }
                 else{
-                    for(int i = 0; i < columnSize; i++){
+                    for(int i = 0; i < columnSize-1; i++){
                         exits[currentRow][i] = Integer.parseInt(record.get(i));
                     }
+                    exits[currentRow][7] =mapDirectionToValue(record.get(7));
                     currentRow++;
                 }
             }
@@ -90,11 +89,17 @@ public class LevelLoader {
             System.out.println(ex.getMessage());
         }
     }
+    public int mapDirectionToValue(String direction){
+        return
+            direction.equals("up") ? 1 :
+            direction.equals("left") ? 2:
+            direction.equals("down") ? 3:
+            4;
+        }
     public Map<Integer,String[][]> getLevelList(){
         return levelList;
     }
     public Map<Integer,int[][]> getExistsList(){
         return exitsList;
     }
-
 }

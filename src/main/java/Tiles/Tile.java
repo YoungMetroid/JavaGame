@@ -2,8 +2,8 @@ package Tiles;
 public abstract class Tile {
     public int xSpriteLocation=0;
     public int ySpriteLocation=0;
-    public int xLocation = 0;
-    public int yLocation = 0;
+    private int xLocation = 0;
+    private int yLocation = 0;
     private int tileSize = 16;
     private boolean collisionStatus = false;
 
@@ -30,6 +30,16 @@ public abstract class Tile {
     }
     public int getXLocation(){return xLocation;}
     public int getYLocation(){return yLocation;}
+    public void setXLocation(int xLocation){
+        this.xLocation = xLocation;
+    }
+    public void setYLocation(int yLocation){
+        this.yLocation = yLocation;
+    }
+    public void setLocation(int xLocation, int yLocation){
+        this.xLocation = xLocation;
+        this.yLocation = yLocation;
+    }
     public void setCollisionStatus(boolean hasCollision){
         this.collisionStatus = hasCollision;
     }

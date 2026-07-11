@@ -1,22 +1,21 @@
 package org.tutorial;
-
 import Tiles.Tile;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.RunnableScheduledFuture;
-
 public class Renderer {
     public static final int WIDTH = 160, HEIGHT = 144;
     public static int[]pixeles = new int[WIDTH* HEIGHT];
 
+    public static int defautColor = 0x00;
+
     public static boolean loading = false;
     public static boolean fading = false;
     public static boolean unFading = false;
+    public static boolean justLoaded = false;
     public static float fadeStart = 0.0f;
     public static float fadeAmount = 0.04f;
     public static float currentFadeAmount = 0.00f;
-    public static SpriteSheet spritesheet = new SpriteSheet("/GameboySprites-Sheet.png");
+    public static SpriteSheet spritesheet = new SpriteSheet("/GameboySprites.png");
 
     public static void render(Tile tile){
         int yTileLocation = tile.getSpriteYLocation();
@@ -43,11 +42,10 @@ public class Renderer {
 
                 if(pixelPosition <leftEdge)
                     continue;
-
+                int alpha = (spritesheet.pixels[(1000* yTileLocation) + xTileLocation] >> 24) & 0xFF;
+                if(alpha == 0) continue;
                 pixeles[pixelPosition] = spritesheet.pixels[(1000* yTileLocation) + xTileLocation];
-                //System.out.print(pixelPosition + ", ");
             }
-            //System.out.println();
             yy += WIDTH;
             yTileLocation++;
         }
@@ -96,7 +94,7 @@ public class Renderer {
             unFading = false;
         }
 
-        System.out.printf("Fade Amount %f and Current Fade: %f \n",fadeAmount,currentFadeAmount);
+      //  System.out.printf("Fade Amount %f and Current Fade: %f \n",fadeAmount,currentFadeAmount);
     }
     public static void fadeArea(BufferedImage image, float fadeAmount, int spriteLocationX, int spriteLocationY){
 

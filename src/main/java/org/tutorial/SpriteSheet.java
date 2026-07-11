@@ -16,6 +16,13 @@ public class SpriteSheet {
         InputStream is = getClass().getResourceAsStream(path);
         try {
             image = ImageIO.read(is);
+
+            if(image.getColorModel().hasAlpha()){
+                System.out.println("Image has transparency");
+            }
+            else{
+                System.out.println("Not transparency detected.");
+            }
         } catch (IOException e) {
             throw new Error(e);
         }
