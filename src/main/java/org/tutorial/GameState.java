@@ -66,7 +66,7 @@ public class GameState {
             currentLevel.setExits(exitsList.get(exit[ExitsDef.LEVEL.getValue()]));
             currentLevel.clearLevel();
             currentLevel.generateLevel();
-            Camara.camaraCalculation(player.getXLocation(),player.getYLocation(),
+            Camara.camaraCalculation((int)player.getXLocation(),(int)player.getYLocation(),
                                     currentLevel.levelWidth,currentLevel.levelHeight);
             System.out.printf("Current Level %d",exit[ExitsDef.LEVEL.getValue()]);
         }
@@ -83,9 +83,9 @@ public class GameState {
         currentLevel.generateLevel();
         currentLevel.setExits(exits);
         player = new Player(128,200);
-        Camara.camaraCalculation(player.getXLocation(), player.getYLocation(),
+        Camara.camaraCalculation((int)player.getXLocation(), (int)player.getYLocation(),
                                 currentLevel.levelWidth, currentLevel.levelHeight);
-        Camara.print(player.getXLocation(),player.getYLocation());
+        Camara.print((int)player.getXLocation(),(int)player.getYLocation());
     }
     public int mapPlayerOffSetToPixel(int playerOffset){
         return  playerOffset==1 ? -4:

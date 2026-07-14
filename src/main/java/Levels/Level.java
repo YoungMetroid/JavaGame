@@ -25,38 +25,42 @@ public abstract class Level {
     public abstract void clearLevel();
     public abstract void setLevel(String[][] level);
     public boolean isThereACollision(Tile tile){
-        boolean collision = false;
-        collisionList = new ArrayList<>();
+        //boolean collision = false;
+        //collisionList = new ArrayList<>();
+        /*
         for(int i = 0; i < collidableObjects.size(); i++){
             Tile wall = collidableObjects.get(i);
-            if(
-                ((tile.getXLocation() + collisionOffSet >=
-                wall.getXLocation()
-                &&  tile.getXLocation() + collisionOffSet <
-                wall.getXLocation()+wall.getTileSize())
-                ||
-                (tile.getXLocation() + tile.getTileSize() - collisionOffSet >
-                wall.getXLocation()
-                &&  tile.getXLocation() + tile.getTileSize() - collisionOffSet <=
-                wall.getXLocation() + wall.getTileSize()))
+            if (
+                    ((tile.getXLocation() + collisionOffSet >=
+                            wall.getXLocation()
+                            && tile.getXLocation() + collisionOffSet <
+                            wall.getXLocation() + wall.getTileSize())
+                            ||
+                            (tile.getXLocation() + tile.getTileSize() - collisionOffSet >
+                                    wall.getXLocation()
+                                    && tile.getXLocation() + tile.getTileSize() - collisionOffSet <=
+                                    wall.getXLocation() + wall.getTileSize()))
 
-                &&
+                            &&
 
-                ((tile.getYLocation() + collisionOffSet >=
-                wall.getYLocation()
-                && tile.getYLocation() + collisionOffSet <
-                wall.getYLocation()+wall.getTileSize())
-                ||
-                (tile.getYLocation() + tile.getTileSize() >
-                wall.getYLocation()
-                && tile.getYLocation() + tile.getTileSize()  <=
-                wall.getYLocation() + wall.getTileSize()))
-            ){
+                            ((tile.getYLocation() + collisionOffSet >=
+                                    wall.getYLocation()
+                                    && tile.getYLocation() + collisionOffSet <
+                                    wall.getYLocation() + wall.getTileSize())
+                                    ||
+                                    (tile.getYLocation() + tile.getTileSize() >
+                                            wall.getYLocation()
+                                            && tile.getYLocation() + tile.getTileSize() <=
+                                            wall.getYLocation() + wall.getTileSize()))
+            ) {
                 collision = true;
-                collisionList.add(wall);
+                //collisionList.add(wall);
+                break;
             }
         }
-        /*
+
+         */
+
         List<Tile>collision = collidableObjects.stream().filter(
                 //Right Side compare to Left Player
                 walls-> (   ((tile.getXLocation()+collisionOffSet >= walls.getXLocation()  &&
@@ -76,8 +80,7 @@ public abstract class Level {
         collisionList = collision;
         return !collision.isEmpty();
 
-         */
-        return collision;
+        //return collision;
     }
     public boolean isTileMoveable(Tile tile){
         Optional<Tile> firstMoveableTile = collisionList.stream()

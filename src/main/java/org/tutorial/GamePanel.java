@@ -24,7 +24,7 @@ public class GamePanel extends JPanel {
     int tick = 0;
     public GamePanel() {
         configuration = new Configuration();
-        configuration.setScreenSize(Configuration.screenSize.x5);
+        configuration.setScreenSize(Configuration.screenSize.x6);
         GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice()
                 .getDefaultConfiguration();

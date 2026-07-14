@@ -18,14 +18,14 @@ public class Renderer {
     public static SpriteSheet spritesheet = new SpriteSheet("/GameboySprites.png");
 
     public static void render(Tile tile){
-        int yTileLocation = tile.getSpriteYLocation();
-        int y = tile.getYLocation() + Camara.y ;
-        int x = tile.getXLocation() + Camara.x ;
+        int yTileLocation = Math.round(tile.getSpriteYLocation());
+        int y = Math.round(tile.getYLocation() + Camara.y);
+        int x = Math.round(tile.getXLocation() + Camara.x);
 
         int yy = WIDTH*y;
 
         for(int i = WIDTH*y; i < (WIDTH*y) + tile.getTileSize();i++){
-            int xTileLocation = tile.getSpriteXLocation();
+            int xTileLocation = (int)Math.floor(tile.getSpriteXLocation());
             int rightEdge = yy+WIDTH;
 
             int leftEdge = yy;

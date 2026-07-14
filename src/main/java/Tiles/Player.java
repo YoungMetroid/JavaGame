@@ -9,35 +9,75 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 
 public class Player extends Tile{
-    int previousX = 0;
-    int previousY = 0;
+    private float previousX = 0;
+    private float previousY = 0;
+    private float previousDeltaX = 0;
+    private float previousDeltaY = 0;
+    private float deltaX = 0;
+    private float deltaY = 0;
     int tick = 0;
-   public int[] ticks = new int[]{0,0,0,0};
+    public int[] ticks = new int[]{0,0,0,0};
     private static final Logger logger = LogManager.getLogger(Player.class);
     public Player(int xLocation, int yLocation) {
         super(0,48,xLocation, yLocation);
-
     }
     @Override
     public void render() {
         Renderer.render(this);
     }
+    public float getPreviousX(){
+        return previousX;
+    }
+    public float getPreviousY(){
+        return previousY;
+    }
+    public float getDeltaX(){return deltaX;}
+    public float getDeltaY(){return deltaY;}
     public void update(){
         //boolean[] keysPressed = KeyboardInputs.keysPressed;
 
-        previousX = this.getXLocation();
-        previousY = this.getYLocation();
+        previousX =  this.getXLocation();
+        previousY =  this.getYLocation();
 
         ticks[0] = KeyboardInputs.continuedKeyPress.getOrDefault(KeyEvent.VK_W,0);
         ticks[2] = KeyboardInputs.continuedKeyPress.getOrDefault(KeyEvent.VK_S,0);
 
         ticks[1] = KeyboardInputs.continuedKeyPress.getOrDefault(KeyEvent.VK_A,0);
         ticks[3] = KeyboardInputs.continuedKeyPress.getOrDefault(KeyEvent.VK_D,0);
-        
-        this.setXLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_A,false) ? this.getXLocation() - 1 : this.getXLocation());
-        this.setXLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_D,false) ? this.getXLocation() + 1 : this.getXLocation());
-        this.setYLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_W,false) ? this.getYLocation() - 1 : this.getYLocation());
-        this.setYLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_S,false) ? this.getYLocation() + 1 : this.getYLocation());
+
+        deltaX=0;
+        deltaY=0;
+
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_W,false)){
+            deltaY--;
+        }
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_S,false)){
+            deltaY++;
+        }
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_A,false)){
+            deltaX--;
+        }
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_D,false)){
+            deltaX++;
+        }
+
+        float length = (float)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        if (length != 0) {
+            deltaX /= length;
+            deltaY /= length;
+        }
+
+        previousDeltaX = deltaX;
+        previousDeltaY = deltaY;
+        float x = this.getXLocation();
+        float y = this.getYLocation();
+        this.setLocation(x+deltaX*1.0f,y+deltaY*1.0f);
+
+        //System.out.printf("%.3f %.3f%n", getXLocation(), getYLocation());
+        //this.setXLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_A,false) ? this.getXLocation() - 1 : this.getXLocation());
+        //this.setXLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_D,false) ? this.getXLocation() + 1 : this.getXLocation());
+        //this.setYLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_W,false) ? this.getYLocation() - 1 : this.getYLocation());
+        //this.setYLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_S,false) ? this.getYLocation() + 1 : this.getYLocation());
 
         int direction = getMaxIndex(ticks);
 
@@ -72,14 +112,6 @@ public class Player extends Tile{
         if(tick >=12 && tick% 12 == 0) {
             this.setSpriteXLocation(this.getSpriteXLocation() == spriteX1 ? spriteX2 : spriteX1);
             tick = tick >= 100_000 ? 12 :tick;
-
-            logger.debug("Test");
-            System.out.println(
-                            "W: " + ticks[0]
-                            + "  S: " + ticks[2]
-                            + "  A: " + ticks[1]
-                            + "  D: " + ticks[3]
-            );
         }
     }
 }
