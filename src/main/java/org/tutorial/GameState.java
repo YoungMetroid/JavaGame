@@ -24,11 +24,11 @@ public class GameState {
         currentLevel.render();
         player.render();
     }
-    public void update(){
+    public void update(float delta){
         //All player, movement, and enemies interactions
         //As well as camara movement calculation should be done here.
             if(!Renderer.loading && !Renderer.unFading) {
-                player.update();
+                player.update(delta);
                 if (currentLevel.isThereACollision(player)) {
                     if(currentLevel.isTileMoveable(player)){
 

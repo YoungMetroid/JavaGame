@@ -15,6 +15,7 @@ public class Player extends Tile{
     private float previousDeltaY = 0;
     private float deltaX = 0;
     private float deltaY = 0;
+    private float speed = 60;
     int tick = 0;
     public int[] ticks = new int[]{0,0,0,0};
     private static final Logger logger = LogManager.getLogger(Player.class);
@@ -33,9 +34,7 @@ public class Player extends Tile{
     }
     public float getDeltaX(){return deltaX;}
     public float getDeltaY(){return deltaY;}
-    public void update(){
-        //boolean[] keysPressed = KeyboardInputs.keysPressed;
-
+    public void update(float deltaTime){
         previousX =  this.getXLocation();
         previousY =  this.getYLocation();
 
@@ -45,39 +44,8 @@ public class Player extends Tile{
         ticks[1] = KeyboardInputs.continuedKeyPress.getOrDefault(KeyEvent.VK_A,0);
         ticks[3] = KeyboardInputs.continuedKeyPress.getOrDefault(KeyEvent.VK_D,0);
 
-        deltaX=0;
-        deltaY=0;
-
-        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_W,false)){
-            deltaY--;
-        }
-        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_S,false)){
-            deltaY++;
-        }
-        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_A,false)){
-            deltaX--;
-        }
-        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_D,false)){
-            deltaX++;
-        }
-
-        float length = (float)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-        if (length != 0) {
-            deltaX /= length;
-            deltaY /= length;
-        }
-
-        previousDeltaX = deltaX;
-        previousDeltaY = deltaY;
-        float x = this.getXLocation();
-        float y = this.getYLocation();
-        this.setLocation(x+deltaX*1.0f,y+deltaY*1.0f);
-
-        //System.out.printf("%.3f %.3f%n", getXLocation(), getYLocation());
-        //this.setXLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_A,false) ? this.getXLocation() - 1 : this.getXLocation());
-        //this.setXLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_D,false) ? this.getXLocation() + 1 : this.getXLocation());
-        //this.setYLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_W,false) ? this.getYLocation() - 1 : this.getYLocation());
-        //this.setYLocation(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_S,false) ? this.getYLocation() + 1 : this.getYLocation());
+        normalize(deltaTime);
+        jitterCheck();
 
         int direction = getMaxIndex(ticks);
 
@@ -103,6 +71,43 @@ public class Player extends Tile{
         }
         if(max == 0) return -1;
         else return index;
+    }
+    public void normalize(float deltaTime){
+        deltaX=0;
+        deltaY=0;
+
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_W,false)){
+            deltaY--;
+        }
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_S,false)){
+            deltaY++;
+        }
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_A,false)){
+            deltaX--;
+        }
+        if(KeyboardInputs.keysPressed.getOrDefault(KeyEvent.VK_D,false)){
+            deltaX++;
+        }
+       // logger.debug(String.format("(%f,%f      deltaTime:%f)",deltaX,deltaY,deltaTime));
+
+        float length = (float)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        float dx = deltaX;
+        float dy = deltaY;
+        if (length != 0) {
+            dx /= length;
+            dy /= length;
+        }
+        this.setLocation(this.getXLocation()+dx*speed*deltaTime
+        ,this.getYLocation()+dy*speed*deltaTime);
+    }
+    public void jitterCheck(){
+        if(previousDeltaX != deltaX || previousDeltaY != deltaY){
+            previousDeltaX = deltaX;
+            previousDeltaY = deltaY;
+            if(deltaX != 0 && deltaY !=0){
+                this.setLocation((int)(this.getXLocation()), (int)Math.floor(this.getYLocation()));
+            }
+        }
     }
     public void updateSprite(int direction,int spriteX1, int spriteX2){
         if(ticks[direction]==1){

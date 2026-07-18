@@ -54,11 +54,19 @@ public class GamePanel extends JPanel {
         }
 
         BufferedImage fadedImage = Renderer.fadeImage(image);
-        Image scaledimage = fadedImage.getScaledInstance(configuration.getscreenWidth(),
+        //Image scaledimage = fadedImage.getScaledInstance(configuration.getscreenWidth(),
+               // configuration.getscreenHeight(),
+                //Image.SCALE_REPLICATE);
+        //graphics.drawImage(scaledimage,0,0,null);
+        graphics.drawImage(
+                fadedImage,
+                0,
+                0,
+                configuration.getscreenWidth(),
                 configuration.getscreenHeight(),
-                Image.SCALE_REPLICATE);
-        graphics.drawImage(scaledimage,0,0,null);
-        graphics.dispose();
+                null
+        );
+        //graphics.dispose();
     }
 
 }

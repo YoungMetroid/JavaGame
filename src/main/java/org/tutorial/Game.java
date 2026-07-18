@@ -35,13 +35,14 @@ public class Game implements Runnable{
         long now;
         int frames = 0;
         long lastCheck = System.currentTimeMillis();
-
+        float deltaTime = 0;
 
         while(true){
             now = System.nanoTime();
+            deltaTime = (now-lastFrame) /1_000_000_000.0f;
             if(now-lastFrame >= timePerFrame){
                 Camara.tick++;
-                if(Camara.tick == 60){
+                if(Camara.tick == FPS_SET){
                     Camara.tick = 0;
                 }
                 for(Map.Entry<Integer, Boolean> entry:KeyboardInputs.keysPressed.entrySet()){
@@ -51,19 +52,17 @@ public class Game implements Runnable{
                         KeyboardInputs.continuedKeyPress.put(entry.getKey(),tick);
                     }
                 }
+
                 gameState.blackFill();
-                gameState.update();
+                gameState.update(deltaTime);
                 gameState.renderLevel();
                 gamePanel.repaint();
                 lastFrame = now;
                 frames++;
             }
 
-            if(System.currentTimeMillis() - lastCheck >=1000){
-                lastCheck = System.currentTimeMillis();
-                //System.out.printf("FPS: %d%n",frames);
-                frames = 0;
-            }
+
+
         }
     }
 }
