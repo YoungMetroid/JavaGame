@@ -4,9 +4,9 @@ import Entities.Entity;
 import inputs.KeyboardInputs;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class Game implements Runnable{
-
     private Thread gameThread;
     private final int FPS_SET = 60;
     private final int ONE_NANO_SECOND = 1_000_000_000;
@@ -20,6 +20,7 @@ public class Game implements Runnable{
         gamePanel.requestFocus();
         starGameLoop();
     }
+
     private void starGameLoop(){
         gameState.loadLevel();
         gameThread = new Thread(this);
@@ -34,27 +35,34 @@ public class Game implements Runnable{
         long now;
         int frames = 0;
         long lastCheck = System.currentTimeMillis();
+        float deltaTime = 0;
 
         while(true){
             now = System.nanoTime();
+            deltaTime = (now-lastFrame) /1_000_000_000.0f;
             if(now-lastFrame >= timePerFrame){
                 Camara.tick++;
-                if(Camara.tick == 60){
+                if(Camara.tick == FPS_SET){
                     Camara.tick = 0;
                 }
-                Arrays.fill(Renderer.pixeles,0);
-                gameState.update();
+                for(Map.Entry<Integer, Boolean> entry:KeyboardInputs.keysPressed.entrySet()){
+                    if(entry.getValue()){
+                        Integer tick = KeyboardInputs.continuedKeyPress.getOrDefault(entry.getKey(),0);
+                        tick++;
+                        KeyboardInputs.continuedKeyPress.put(entry.getKey(),tick);
+                    }
+                }
+
+                gameState.blackFill();
+                gameState.update(deltaTime);
                 gameState.renderLevel();
                 gamePanel.repaint();
                 lastFrame = now;
                 frames++;
             }
 
-            if(System.currentTimeMillis() - lastCheck >=1000){
-                lastCheck = System.currentTimeMillis();
-                //System.out.printf("FPS: %d%n",frames);
-                frames = 0;
-            }
+
+
         }
     }
 }

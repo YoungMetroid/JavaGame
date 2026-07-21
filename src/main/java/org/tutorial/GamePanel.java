@@ -9,10 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.GraphicsConfiguration;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.DataBufferInt;
-import java.awt.image.Raster;
-import java.util.Arrays;
+
 
 public class GamePanel extends JPanel {
 
@@ -31,7 +29,7 @@ public class GamePanel extends JPanel {
                 .getDefaultScreenDevice()
                 .getDefaultConfiguration();
         image = graphicsConfiguration.createCompatibleImage(
-                Renderer.WIDTH, Renderer.HEIGHT, Transparency.OPAQUE);
+                Renderer.WIDTH, Renderer.HEIGHT, Transparency.TRANSLUCENT);
 
         buffer = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
@@ -56,11 +54,19 @@ public class GamePanel extends JPanel {
         }
 
         BufferedImage fadedImage = Renderer.fadeImage(image);
-        Image scaledimage = fadedImage.getScaledInstance(configuration.getscreenWidth(),
+        //Image scaledimage = fadedImage.getScaledInstance(configuration.getscreenWidth(),
+               // configuration.getscreenHeight(),
+                //Image.SCALE_REPLICATE);
+        //graphics.drawImage(scaledimage,0,0,null);
+        graphics.drawImage(
+                fadedImage,
+                0,
+                0,
+                configuration.getscreenWidth(),
                 configuration.getscreenHeight(),
-                Image.SCALE_SMOOTH);
-        graphics.drawImage(scaledimage,0,0,null);
-        graphics.dispose();
+                null
+        );
+        //graphics.dispose();
     }
 
 }

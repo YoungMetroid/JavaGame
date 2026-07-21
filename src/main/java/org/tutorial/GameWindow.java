@@ -11,5 +11,6 @@ public class GameWindow {
         jFrame.setResizable(false);
         jFrame.pack();
         jFrame.setVisible(true);
+        jFrame.setLocation(0,0);
     }
 }

@@ -1,35 +1,43 @@
 package Tiles;
 public abstract class Tile {
-    public int xSpriteLocation=0;
-    public int ySpriteLocation=0;
-    public int xLocation = 0;
-    public int yLocation = 0;
+    public float xSpriteLocation=0;
+    public float ySpriteLocation=0;
+    private float xLocation = 0;
+    private float yLocation = 0;
     private int tileSize = 16;
     private boolean collisionStatus = false;
 
-    public Tile(int xSpriteLocation, int ySpriteLocation, int xLocation, int yLocation ){
+    public Tile(float xSpriteLocation, float ySpriteLocation, float xLocation, float yLocation ){
          this.xSpriteLocation = xSpriteLocation;
          this.ySpriteLocation =  ySpriteLocation;
          this.xLocation = xLocation;
          this.yLocation = yLocation;
     }
-    public Tile(int xLocation, int yLocation){
+    public Tile(float xLocation, float yLocation){
         this.xLocation = xLocation;
         this.yLocation = yLocation;
     }
 
-    public int getSpriteXLocation() {
+    public float getSpriteXLocation() {
         return xSpriteLocation;
     }
-    public int getSpriteYLocation(){
+    public float getSpriteYLocation(){
         return ySpriteLocation;
     }
     public void setSpriteXLocation(int x){this.xSpriteLocation = x;}
     public void setSpriteYLocation(int y){
         this.ySpriteLocation = y;
     }
-    public int getXLocation(){return xLocation;}
-    public int getYLocation(){return yLocation;}
+    public float getXLocation(){return xLocation;}
+    public float getYLocation(){return yLocation;}
+    public void setXLocation(float xLocation){this.xLocation = xLocation;}
+    public void setYLocation(float yLocation){
+        this.yLocation = yLocation;
+    }
+    public void setLocation(float xLocation, float yLocation){
+        this.xLocation = xLocation;
+        this.yLocation = yLocation;
+    }
     public void setCollisionStatus(boolean hasCollision){
         this.collisionStatus = hasCollision;
     }

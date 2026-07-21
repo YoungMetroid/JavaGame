@@ -7,7 +7,8 @@ public enum ExitsDef {
     TOP_Y(3),
     BOTTOM_Y(4),
     PLAYER_X(5),
-    PLAYER_Y(6);
+    PLAYER_Y(6),
+    PLAYER_OFFSET(7);
     private final int value;
     ExitsDef(int value){
         this.value = value;

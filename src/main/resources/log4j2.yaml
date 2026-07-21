@@ -1,0 +1,24 @@
+Configuration:
+  status: INFO
+  name: YamlJsonConfig
+  Appenders:
+    Console:
+      name: "ConsoleAppender"
+      target: SYSTEM_OUT
+      JsonTemplateLayout:
+        eventTemplateUri: "classpath:template.json"
+    File:
+      - name: "criticalErrors"
+        fileName: "logs/weird_errors.log"
+        JsonTemplateLayout:
+          eventTemplateUri: "classpath:template.json"
+
+
+  Loggers:
+    Root:
+      level: "ALL"
+      AppenderRef:
+        - ref: "ConsoleAppender"
+          level: "DEBUG"
+        - ref: "criticalErrors"
+          level: "WARN"
