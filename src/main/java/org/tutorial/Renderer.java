@@ -13,7 +13,7 @@ public class Renderer {
     public static boolean unFading = false;
     public static boolean justLoaded = false;
     public static float fadeStart = 0.0f;
-    public static float fadeAmount = 0.01f;
+    public static float fadeAmount = 0.04f;
     public static float currentFadeAmount = 0.00f;
     public static SpriteSheet spritesheet = new SpriteSheet("/GameboySprites.png");
 

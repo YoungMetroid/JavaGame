@@ -66,7 +66,7 @@ public class GameState {
             currentLevel.setExits(exitsList.get(exit[ExitsDef.LEVEL.getValue()]));
             currentLevel.clearLevel();
             currentLevel.generateLevel();
-            Camara.camaraCalculation(player.xLocation,player.yLocation,
+            Camara.camaraCalculation(player.getXLocation(),player.getYLocation(),
                                     currentLevel.levelWidth,currentLevel.levelHeight);
         }
     }
